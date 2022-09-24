@@ -56,8 +56,8 @@ export default nextConnect()
             },
           },
           {
-            name: serverConfig.params.userHashCookie,
-            value: serverUtils.buildHash(user),
+            name: serverConfig.params.userTokenCookie,
+            value: serverUtils.buildToken(user),
             options: {
               ...serverConfig.cookies.options,
               httpOnly: true,

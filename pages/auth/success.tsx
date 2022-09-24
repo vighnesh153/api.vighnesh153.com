@@ -10,7 +10,7 @@ export default function AuthSuccess() {
     const redirectUrl = localStorage.getItem(clientConfig.redirectUrlParam) ?? clientConfig.defaultRedirectUrl;
     localStorage.removeItem(clientConfig.redirectUrlParam);
 
-    const user = JSON.parse((Cookies.get('user') ?? '').slice(2));
+    const user = JSON.parse((Cookies.get('user') ?? 'j:{}').slice(2));
     console.log(user);
 
     // Login succeeded. Go back to where you came from

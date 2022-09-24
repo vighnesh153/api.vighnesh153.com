@@ -6,7 +6,7 @@ const missingConfig = () => {
 
 export const serverConfig = {
   oauth: {
-    loginSuccess: `${process.env.MY_HOST_URL}/auth/success`,
+    loginSuccess: `${process.env.MY_HOST_URL ?? missingConfig()}/auth/success`,
     google: {
       strategyName: 'google',
       scope: ['profile'],
@@ -26,6 +26,9 @@ export const serverConfig = {
   },
   params: {
     userCookie: 'user',
-    userHashCookie: 'userHash',
+    userTokenCookie: 'userToken',
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET ?? missingConfig(),
   },
 };

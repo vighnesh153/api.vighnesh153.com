@@ -1,5 +1,7 @@
 import { CookieSerializeOptions, serialize } from 'cookie';
 import * as crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { serverConfig } from '@config/server-config';
 
 export interface MyCookie {
   name: string;
@@ -23,13 +25,11 @@ export const serverUtils = {
 
     return serializedCookies;
   },
-  buildHash(obj: any): string {
-    // const salt = crypto.randomBytes(16).toString('hex');
-    const salt = 'Vighnesh is awesome';
-    return crypto.pbkdf2Sync(JSON.stringify(obj), salt, 10, 64, `sha512`).toString(`hex`);
+  buildToken(obj: any): string {
+    return jwt.sign(obj, serverConfig.jwt.secret);
   },
-  verifyHash(obj: any, potentialHash: string): boolean {
-    const hash = this.buildHash(obj);
-    return hash === potentialHash;
+  verifyToken(obj: any, potentialToken: string): boolean {
+    const token = this.buildToken(obj);
+    return token === potentialToken;
   },
 };
