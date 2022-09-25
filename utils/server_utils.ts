@@ -1,7 +1,7 @@
 import { CookieSerializeOptions, serialize } from 'cookie';
-import * as crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { serverConfig } from '@config/server-config';
+import { User } from '@interfaces/User';
 
 export interface MyCookie {
   name: string;
@@ -28,8 +28,18 @@ export const serverUtils = {
   buildToken(obj: any): string {
     return jwt.sign(obj, serverConfig.jwt.secret);
   },
-  verifyToken(obj: any, potentialToken: string): boolean {
-    const token = this.buildToken(obj);
-    return token === potentialToken;
+  decodeToken(token: string): User | null {
+    try {
+      const payload = jwt.verify(token, serverConfig.jwt.secret) as any;
+      return {
+        id: payload.id,
+        name: payload.name,
+        photo: payload.photo,
+        isAdmin: payload.id === serverConfig.oauth.google.adminGoogleId,
+      };
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   },
 };

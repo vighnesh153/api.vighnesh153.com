@@ -5,7 +5,6 @@ import { serverConfig } from '@config/server-config';
 import expressSession from 'express-session';
 import { serverUtils } from '@utils/server_utils';
 import { User } from '@interfaces/User';
-import { NextResponse } from 'next/server';
 
 interface RequestUser {
   id: string;
@@ -17,6 +16,7 @@ const buildSerializableUser = (user: RequestUser): User => ({
   id: user.id,
   name: user.displayName,
   photo: user.photos.length > 0 ? user.photos[0].value : null,
+  isAdmin: user.id === serverConfig.oauth.google.adminGoogleId,
 });
 
 export default nextConnect()
@@ -34,29 +34,12 @@ export default nextConnect()
       // user
       const user = buildSerializableUser(req.user);
 
-      /**
-       * Create a Redirect instance to loginSuccess
-       *
-       * @see https://github.com/vercel/next.js/issues/32424
-       */
-      // const res = NextResponse.redirect(serverConfig.oauth.loginSuccess);
-
       // sets the cookies
-
-      //.redirect(serverConfig.oauth.loginSuccess)
-
       res.setHeader(
         'Set-Cookie',
         serverUtils.serializeCookies([
           {
-            name: serverConfig.params.userCookie,
-            value: user,
-            options: {
-              ...serverConfig.cookies.options,
-            },
-          },
-          {
-            name: serverConfig.params.userTokenCookie,
+            name: serverConfig.params.userToken,
             value: serverUtils.buildToken(user),
             options: {
               ...serverConfig.cookies.options,
@@ -67,7 +50,7 @@ export default nextConnect()
       );
 
       res.send(`
-        <h1>Login successful. Redirecting...</h1>
+        <p>Login successful. Redirecting...</p>
         <script>
           window.location.replace("${serverConfig.oauth.loginSuccess}")
         </script>
