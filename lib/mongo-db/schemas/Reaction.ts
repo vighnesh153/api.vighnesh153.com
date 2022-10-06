@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { serverConfig } from '@config/server-config';
 import { buildCollectionName } from '@lib/mongo-db/utils';
-import { getReactsAndCommentsConnection } from '../connections';
+import { getConnection } from '../connections';
 
 const ObjectId = Schema.Types.ObjectId;
 
@@ -18,7 +18,7 @@ export const ReactionSchema = new Schema({
 });
 
 export async function getReactionModel() {
-  const connection = await getReactsAndCommentsConnection();
+  const connection = await getConnection();
   const collectionName = buildCollectionName(serverConfig.mongoDB.collectionNames.reactions);
   return connection.model(collectionName, ReactionSchema);
 }

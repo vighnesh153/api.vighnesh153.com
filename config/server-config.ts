@@ -39,16 +39,14 @@ export const serverConfig = {
   },
   mongoDB: {
     credentials: {
-      reactsAndComments: {
-        user: process.env.MONGO_DB_REACTIONS_AND_COMMENTS_USER ?? missingConfig(),
-        password: process.env.MONGO_DB_REACTIONS_AND_COMMENTS_PASSWORD ?? missingConfig(),
-        clusterUrl: process.env.MONGO_DB_REACTIONS_AND_COMMENTS_CLUSTER_URL ?? missingConfig(),
-      },
+      user: process.env.MONGO_DB_USER ?? missingConfig(),
+      password: process.env.MONGO_DB_PASSWORD ?? missingConfig(),
+      clusterUrl: process.env.MONGO_DB_CLUSTER_URL ?? missingConfig(),
     },
     collectionsPrefix: process.env.MONGODB_COLLECTIONS_SUFFIX ?? '',
     collectionNames: {
-      reactions: 'Reaction',
       comments: 'Comment',
+      reactions: 'Reaction',
     },
   },
   params: {
